@@ -95,3 +95,39 @@ def cadastrar_cliente():
             cadastrar.writeheader()
         cadastrar.writerow({"matricula":matricula, "nome":nome})
     print ("Cadastro realizado com sucesso!!")
+
+
+import os
+import csv
+
+def emitir_sugestao():
+    os.system('cls') or os.system('clear')
+    print("|______/ /______EMISSÃO DE SUGESTÕES______/ /______/|")
+    
+    # Solicitar informações da sugestão
+    titulo_ata = input("Digite o título da ata em que deseja emitir uma sugestão: ")
+    sugestao = input("Digite sua sugestão para a ata: ")
+
+    # Verificar se a ata existe no arquivo de atas
+    with open("atas_emitidas_priv.csv", "r", newline="", encoding="utf-8") as atasemitidas_csv:
+        leitor = csv.DictReader(atasemitidas_csv, delimiter=";")
+        ata_encontrada = None
+        for linha in leitor:
+            if linha["titulo"] == titulo_ata:
+                ata_encontrada = linha
+                break
+        
+        if not ata_encontrada:
+            print("Ata não encontrada. Certifique-se de que o título esteja correto.")
+            return
+    
+    # Gravar a sugestão no arquivo de sugestões
+    with open("sugestoes.csv", "a", newline="", encoding="utf-8") as sugestoes_csv:
+        coluna_sugestao = ["titulo", "sugestao"]
+        emitir_sugestao = csv.DictWriter(sugestoes_csv, fieldnames=coluna_sugestao, delimiter=";", lineterminator='\r''\n')
+        emitir_sugestao.writerow({"titulo": titulo_ata, "sugestao": sugestao})
+    
+    print("Sugestão emitida com sucesso!")
+
+# Exemplo de uso
+emitir_sugestao()
