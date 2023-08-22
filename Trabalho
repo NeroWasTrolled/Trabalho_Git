@@ -1,0 +1,97 @@
+import emitir_ata as emissao
+import cadastro
+
+resposta = "s"
+
+while resposta == "s":
+    menu = '''|\______/ /______/\_______________/\______/ /______/|
+    \r|===[1] Emitir Ata                               ===|
+    \r|===[2] Listar clientes                          ===|
+    \r|===[3] Atas Publicas                          ===|
+    \r|===[4] Atas de viadinho/Isaac                             ===|
+    \r|===[5] Emprestar livro                          ===|
+    \r|===[6] Listar emprestimos                       ===|
+    \r|===[7] Listar livros atrasados                  ===|
+    \r|===[8] Remover cliente                          ===|
+    \r|===[9] Remover livro                            ===|
+    \r|===[10] Sair                                    ===|
+    \r|\______/ /______/\_______________/\______/ /______/|'''                                  
+
+    print(menu)
+
+    opcao = int(input("Escolha uma opçao: "))
+
+    if opcao == 1:
+        emissao.emitir_ata()
+    if opcao == 2:
+        cadastro.cadastrar_cliente()
+    import os, csv
+
+def emitir_ata():
+    os.system('cls') or os.system('clear')  
+    print("|\______/ /______EMISSÃO DE ATA______/ /______/|")
+    dados = {}
+
+    titulo_ata = input("Digite o Título da ata: ")
+    pauta = input("Digite o tema da pauta: ")
+    desc = input("Digite a Descrição: ")
+    keypass = input("Digite a palavra chave: ")
+
+    dados[keypass] = [titulo_ata,pauta,desc]
+    coluna = ["titulo",
+              "pauta",
+              "desc"]
+    
+    print(dados)
+    print(coluna)
+
+    resposta = 's'
+
+    resposta = input("Deseja continuar? [s/n]")
+
+    if resposta == 's':
+        files_exist = os.path.isfile("atas_emitidas_priv.csv")
+        with open("atas_emitidas_priv.csv","a",newline="", encoding="utf-8")as atasemitidas_csv: #utf-8 padrão brasileiro para acentuação### as é um apelido
+            emitir = csv.DictWriter(atasemitidas_csv,fieldnames=coluna, delimiter=";",lineterminator='\r''\n')
+            if not files_exist:
+                emitir.writeheader()
+            emitir.writerow({"titulo":titulo_ata,
+                            "pauta":pauta,
+                            "desc":desc})
+        print ("Cadastro realizado com sucesso!!")
+
+        
+    else:
+        files_exist = os.path.isfile("atas_emitidas.csv")
+        with open("atas_emitidas.csv","a",newline="", encoding="utf-8")as atasemitidas_csv: #utf-8 padrão brasileiro para acentuação### as é um apelido
+            emitir = csv.DictWriter(atasemitidas_csv,fieldnames=coluna, delimiter=";",lineterminator='\r''\n')
+            if not files_exist:
+                emitir.writeheader()
+            emitir.writerow({"titulo":titulo_ata,
+                            "pauta":pauta,
+                            "desc":desc})
+    print ("Cadastro realizado com sucesso!!")
+
+    import os, csv
+
+def cadastrar_cliente():
+    os.system('cls') or os.system('clear')  
+    print("|\______/ /______CADASTRO PARTICIPANTES______/ /______/|")
+    dados = {}
+
+    nome = input("Digite seu nome: ")
+    matricula = input("Digite a matricula: ")
+    
+    dados[matricula] = [nome]
+    coluna = ["matricula", "nome"]
+    print(dados)
+    print(coluna)
+
+
+    files_exist = os.path.isfile("clientes.csv")
+    with open("clientes.csv","a",newline="", encoding="utf-8")as clientes_csv: #utf-8 padrão brasileiro para acentuação### as é um apelido
+        cadastrar = csv.DictWriter(clientes_csv,fieldnames=coluna, delimiter=";",lineterminator='\r''\n')
+        if not files_exist:
+            cadastrar.writeheader()
+        cadastrar.writerow({"matricula":matricula, "nome":nome})
+    print ("Cadastro realizado com sucesso!!")
